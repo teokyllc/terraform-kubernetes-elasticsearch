@@ -1,5 +1,5 @@
 resource "kubernetes_namespace_v1" "elasticsearch_namespace" {
-  count = var.deploy_elasticsearch ? 1 : 0
+  count = var.create_elasticsearch_namespace ? 1 : 0
   metadata {
     name = var.elasticsearch_namespace
   }
@@ -9,7 +9,7 @@ resource "kubernetes_secret_v1" "elastic_user_password" {
   count = var.static_elastic_passwd ? 1 : 0
   metadata {
     name = "${var.elasticsearch_name}-es-elastic-user"
-    namespace = kubernetes_namespace_v1.elasticsearch_namespace[0].metadata[0].name
+    namespace = var.create_elasticsearch_namespace ? kubernetes_namespace_v1.elasticsearch_namespace[0].metadata[0].name : var.elasticsearch_namespace
   }
 
   data = {
@@ -31,7 +31,7 @@ resource "kubernetes_manifest" "elasticsearch" {
     "kind" = "Elasticsearch"
     "metadata" = {
       "name" = var.elasticsearch_name
-      "namespace" = kubernetes_namespace_v1.elasticsearch_namespace[0].metadata[0].name
+      "namespace" = var.create_elasticsearch_namespace ? kubernetes_namespace_v1.elasticsearch_namespace[0].metadata[0].name : var.elasticsearch_namespace
     }
     "spec" = {
       "http" = {

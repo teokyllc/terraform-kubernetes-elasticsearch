@@ -6,7 +6,7 @@ resource "kubernetes_manifest" "kibana" {
     "kind" = "Kibana"
     "metadata" = {
       "name" = var.kibana_name
-      "namespace" = kubernetes_namespace_v1.elasticsearch_namespace[0].metadata[0].name
+      "namespace" = var.kibana_namespace
     }
     "spec" = {
       "config" = {

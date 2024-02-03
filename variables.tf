@@ -28,6 +28,12 @@ variable "deploy_elasticsearch" {
   default     = false
 }
 
+variable "create_elasticsearch_namespace" {
+  type        = bool
+  description = "If enabled, created a new namespace for ElasticSearch."
+  default     = false
+}
+
 variable "elasticsearch_namespace" {
   type        = string
   description = "The namespace for the ElasticSearch deployment."
@@ -115,6 +121,12 @@ variable "deploy_kibana" {
 variable "kibana_name" {
   type        = string
   description = "The name of the Kibana object."
+  default     = null
+}
+
+variable "kibana_namespace" {
+  type        = string
+  description = "The name of the Kibana namespace."
   default     = null
 }
 
