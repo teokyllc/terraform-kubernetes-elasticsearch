@@ -1,3 +1,10 @@
+resource "kubernetes_namespace_v1" "kibana_namespace" {
+  count = var.create_kibana_namespace ? 1 : 0
+  metadata {
+    name = var.kibana_namespace
+  }
+}
+
 resource "kubernetes_manifest" "kibana" {
   count      = var.deploy_kibana ? 1 : 0
   depends_on = [helm_release.elastic_operator]
@@ -6,7 +13,7 @@ resource "kubernetes_manifest" "kibana" {
     "kind" = "Kibana"
     "metadata" = {
       "name" = var.kibana_name
-      "namespace" = var.kibana_namespace
+      "namespace" = var.create_kibana_namespace ? kubernetes_namespace_v1.kibana_namespace[0].metadata[0].name : var.kibana_namespace
     }
     "spec" = {
       "config" = {
@@ -15,7 +22,7 @@ resource "kubernetes_manifest" "kibana" {
       "count" = 2
       "elasticsearchRef" = {
         "name" = var.elasticsearch_name
-        "namespace" = kubernetes_namespace_v1.elasticsearch_namespace[0].metadata[0].name
+        "namespace" = var.elasticsearch_namespace
       }
       "http" = {
         "tls" = {
@@ -24,7 +31,7 @@ resource "kubernetes_manifest" "kibana" {
           }
         }
       }
-      "version" = var.elasticsearch_version
+      "version" = var.kibana_version
     }
   }
 }

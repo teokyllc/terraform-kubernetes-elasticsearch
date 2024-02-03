@@ -54,7 +54,7 @@ variable "elasticsearch_name" {
 
 variable "elasticsearch_version" {
   type        = string
-  description = "The name of ElasticSearch to deploy."
+  description = "The version of ElasticSearch to deploy."
   default     = null
 }
 
@@ -124,6 +124,12 @@ variable "kibana_name" {
   default     = null
 }
 
+variable "create_kibana_namespace" {
+  type        = bool
+  description = "If enabled, created a new namespace for Kibana."
+  default     = false
+}
+
 variable "kibana_namespace" {
   type        = string
   description = "The name of the Kibana namespace."
@@ -136,21 +142,33 @@ variable "kibana_public_base_url" {
   default     = null
 }
 
+variable "kibana_version" {
+  type        = string
+  description = "The version of Kibana to deploy."
+  default     = null
+}
+
 variable "enable_istio" {
   type        = bool
   description = "Enables Istio services.  Certificate, Gateway & Virtual Services."
   default     = false
 }
 
-variable "es_dns_names" {
+variable "istio_dns_names" {
   type        = list(any)
-  description = "A list of hostnames for the ElasticSearch."
+  description = "A list of hostnames for the ElasticSearch apps."
   default     = null
 }
 
-variable "root_app_hostname" {
+variable "elasticsearch_dns_name" {
   type        = string
-  description = "A root domain name for ElasticSearch DNS."
+  description = "A domain name for ElasticSearch."
+  default     = null
+}
+
+variable "kibana_dns_name" {
+  type        = string
+  description = "A domain name for ElasticSearch."
   default     = null
 }
 

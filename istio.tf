@@ -5,7 +5,7 @@ resource "kubernetes_manifest" "elasticsearch_gateway" {
     "kind" = "Gateway"
     "metadata" = {
       "name" = "elasticsearch-gateway"
-      "namespace" = var.elasticsearch_namespace
+      "namespace" = var.kibana_namespace
     }
     "spec" = {
       "selector" = {
@@ -13,7 +13,7 @@ resource "kubernetes_manifest" "elasticsearch_gateway" {
       }
       "servers" = [
         {
-          "hosts" = var.es_dns_names
+          "hosts" = var.istio_dns_names
           "port" = {
             "name" = "http"
             "number" = 80
@@ -24,7 +24,7 @@ resource "kubernetes_manifest" "elasticsearch_gateway" {
           }
         },
         {
-          "hosts" = var.es_dns_names
+          "hosts" = var.istio_dns_names
           "port" = {
             "name" = "https"
             "number" = 443
@@ -51,12 +51,12 @@ resource "kubernetes_manifest" "elasticsearch_virtualservice" {
     "kind" = "VirtualService"
     "metadata" = {
       "name" = "elasticsearch"
-      "namespace" = var.elasticsearch_namespace
+      "namespace" = var.kibana_namespace
     }
     "spec" = {
       "gateways" = ["elasticsearch-gateway"]
       "hosts" = [
-        "elasticsearch.${var.root_app_hostname}",
+        var.elasticsearch_dns_name
       ]
       "http" = [
         {
@@ -95,7 +95,7 @@ resource "kubernetes_manifest" "kibana_virtualservice" {
     "spec" = {
       "gateways" = ["elasticsearch-gateway"]
       "hosts" = [
-        "monitoring.${var.root_app_hostname}",
+        var.kibana_dns_name
       ]
       "http" = [
         {
