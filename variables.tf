@@ -24,7 +24,7 @@ variable "elastic_operator_helm_release_name" {
 
 variable "deploy_elasticsearch" {
   type        = bool
-  description = "Deploys an ElasticSearch cluster and a Kibana frontend."
+  description = "Deploys an ElasticSearch cluster."
   default     = false
 }
 
@@ -80,6 +80,12 @@ variable "elasticsearch_data_memory_limit_in_gb" {
   type        = string
   description = "The memory limit on the data role pods."
   default     = null
+}
+
+variable "deploy_kibana" {
+  type        = bool
+  description = "Deploys a Kibana frontend."
+  default     = false
 }
 
 variable "kibana_name" {

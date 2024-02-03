@@ -14,7 +14,7 @@ You can use versioned release tags to ensure that your project using this module
 <b>Repo latest commit</b><br>
 ```
 module "elasticsearch" {
-  source = "github.com/Medality-Health/terraform-kubernetes-elasticsearch"
+  source = "github.com/teokyllc/terraform-kubernetes-elasticsearch"
   ...
 ```
 <br>
@@ -23,7 +23,7 @@ module "elasticsearch" {
 
 ```
 module "elasticsearch" {
-  source = "github.com/Medality-Health/terraform-kubernetes-elasticsearch?ref=1.0"
+  source = "github.com/teokyllc/terraform-kubernetes-elasticsearch?ref=1.0"
   ...
 ```
 <br>
@@ -33,7 +33,7 @@ This is an example of using this module something, fill in the rest.<br>
 
 ```
 module "elasticsearch" {
-  source = "github.com/Medality-Health/terraform-kubernetes-elasticsearch?ref=1.0"
+  source = "github.com/teokyllc/terraform-kubernetes-elasticsearch?ref=1.0"
   create_eck_operator        = true
   elastic_operator_version   = "2.6.1"
   elastic_operator_namespace = "elastic-system"
@@ -43,7 +43,7 @@ module "elasticsearch" {
 <br><br>
 Module can be tested locally:<br>
 ```
-git clone https://github.com/Medality-Health/terraform-kubernetes-elasticsearch.git
+git clone https://github.com/teokyllc/terraform-kubernetes-elasticsearch.git
 cd terraform-kubernetes-elasticsearch
 
 cat <<EOF > elasticsearch.auto.tfvars
