@@ -8,4 +8,3 @@ resource "helm_release" "elastic_operator" {
   create_namespace = true
   atomic           = true
 }
-

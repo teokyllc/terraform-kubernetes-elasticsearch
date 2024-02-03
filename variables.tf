@@ -64,6 +64,24 @@ variable "elasticsearch_disable_self_signed_tls" {
   default     = false
 }
 
+variable "elasticsearch_master_node_set_count" {
+  type        = string
+  description = "The number of nodes in the master node set."
+  default     = null
+}
+
+variable "elasticsearch_data_node_set_count" {
+  type        = string
+  description = "The number of nodes in the data node set."
+  default     = null
+}
+
+variable "elasticsearch_storage_class_name" {
+  type        = string
+  description = "The name of the Kubernetes storage class to use for persistent data storage."
+  default     = null
+}
+
 variable "elasticsearch_master_role_disk_size_in_gb" {
   type        = string
   description = "The size of the persistent disk on the master role pods."
@@ -76,9 +94,15 @@ variable "elasticsearch_data_role_disk_size_in_gb" {
   default     = null
 }
 
-variable "elasticsearch_data_memory_limit_in_gb" {
+variable "static_elastic_passwd" {
+  type        = bool
+  description = "If true allows a static password from a SSM parameter."
+  default     = false
+}
+
+variable "static_elastic_passwd_parameter_name" {
   type        = string
-  description = "The memory limit on the data role pods."
+  description = "The name of a SSM parameter with the elastic admin password."
   default     = null
 }
 

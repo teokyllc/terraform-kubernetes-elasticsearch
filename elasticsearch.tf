@@ -6,14 +6,14 @@ resource "kubernetes_namespace_v1" "elasticsearch_namespace" {
 }
 
 resource "kubernetes_secret_v1" "elastic_user_password" {
-  count = var.deploy_elasticsearch ? 1 : 0
+  count = var.static_elastic_passwd ? 1 : 0
   metadata {
     name = "${var.elasticsearch_name}-es-elastic-user"
     namespace = kubernetes_namespace_v1.elasticsearch_namespace[0].metadata[0].name
   }
 
   data = {
-    elastic = var.elasticsearch_password
+    elastic = data.aws_ssm_parameter.static_elastic_passwd.value
   }
 
   type = "Opaque"
@@ -50,7 +50,7 @@ resource "kubernetes_manifest" "elasticsearch" {
             ]
             "node.store.allow_mmap" = false
           }
-          "count" = 2
+          "count" = var.elasticsearch_master_node_set_count
           "name" = "master"
           "podTemplate" = {
             "metadata" = {
@@ -75,7 +75,7 @@ resource "kubernetes_manifest" "elasticsearch" {
                     "storage" = "${var.elasticsearch_master_role_disk_size_in_gb}Gi"
                   }
                 }
-                "storageClassName" = "gp2"
+                "storageClassName" = var.elasticsearch_storage_class_name
               }
             },
           ]
@@ -87,7 +87,7 @@ resource "kubernetes_manifest" "elasticsearch" {
             ]
             "node.store.allow_mmap" = false
           }
-          "count" = 2
+          "count" = var.elasticsearch_data_node_set_count
           "name" = "data"
           "podTemplate" = {
             "metadata" = {
@@ -96,21 +96,6 @@ resource "kubernetes_manifest" "elasticsearch" {
                 "traffic.sidecar.istio.io/excludeOutboundPorts" = "9300"
                 "traffic.sidecar.istio.io/includeInboundPorts" = "*"
               }
-            }
-            "spec" = {
-              "containers" = [
-                {
-                  "name" = "elasticsearch"
-                  "resources" = {
-                    "limits" = {
-                      "memory" = "${var.elasticsearch_data_memory_limit_in_gb}Gi"
-                    }
-                    "requests" = {
-                      "memory" = "${var.elasticsearch_data_memory_limit_in_gb}Gi"
-                    }
-                  }
-                },
-              ]
             }
           }
           "volumeClaimTemplates" = [
@@ -127,7 +112,7 @@ resource "kubernetes_manifest" "elasticsearch" {
                     "storage" = "${var.elasticsearch_data_role_disk_size_in_gb}Gi"
                   }
                 }
-                "storageClassName" = "gp2"
+                "storageClassName" = var.elasticsearch_storage_class_name
               }
             },
           ]
