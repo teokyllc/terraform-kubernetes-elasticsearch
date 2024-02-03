@@ -13,7 +13,7 @@ resource "kubernetes_secret_v1" "elastic_user_password" {
   }
 
   data = {
-    elastic = data.aws_ssm_parameter.static_elastic_passwd.value
+    elastic = data.aws_ssm_parameter.static_elastic_passwd[0].value
   }
 
   type = "Opaque"
