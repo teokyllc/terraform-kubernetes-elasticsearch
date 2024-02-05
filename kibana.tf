@@ -17,7 +17,7 @@ resource "kubernetes_manifest" "kibana" {
     }
     "spec" = {
       "config" = {
-        "server.publicBaseUrl" = var.kibana_public_base_url
+        "server.publicBaseUrl" = var.kibana_dns_name
       }
       "count" = 2
       "elasticsearchRef" = {

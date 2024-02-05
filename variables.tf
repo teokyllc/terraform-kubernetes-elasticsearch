@@ -136,12 +136,6 @@ variable "kibana_namespace" {
   default     = null
 }
 
-variable "kibana_public_base_url" {
-  type        = string
-  description = "The public base URL for Kibana."
-  default     = null
-}
-
 variable "kibana_version" {
   type        = string
   description = "The version of Kibana to deploy."
@@ -168,7 +162,7 @@ variable "elasticsearch_dns_name" {
 
 variable "kibana_dns_name" {
   type        = string
-  description = "A domain name for ElasticSearch."
+  description = "A domain name for Kibana."
   default     = null
 }
 
